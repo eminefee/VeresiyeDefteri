@@ -1,0 +1,13 @@
+﻿using Business.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace Business.Context
+{
+    public class AppDbContext : DbContext
+    {
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+
+        public DbSet<DebtRecord> debtrecords { get; set; } // örnek tablo
+
+    }
+}

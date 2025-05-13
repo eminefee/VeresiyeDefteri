@@ -1,0 +1,39 @@
+﻿@model DebtRecord
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Debt Record</title>
+</head>
+<body>
+    <h1>Edit Debt Record</h1>
+
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="Id" />
+
+        <div>
+            <label for="CustomerName">Customer Name</label>
+            <input type="text" asp-for="CustomerName" />
+        </div>
+
+        <div>
+            <label for="Amount">Amount</label>
+            <input type="number" asp-for="Amount" step="0.01" />
+        </div>
+
+        <div>
+            <label for="Date">Date</label>
+            <input type="datetime-local" asp-for="Date" />
+        </div>
+
+        <div>
+            <label for="Description">Description</label>
+            <input type="text" asp-for="Description" />
+        </div>
+
+        <button type="submit">Update</button>
+    </form>
+</body>
+</html>

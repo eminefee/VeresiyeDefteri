@@ -1,0 +1,47 @@
+﻿@* <form action="/Debt/Add" method="post">
+    <label for="customerName">Müşteri Adı:</label>
+    <input type="text" id="customerName" name="customerName" required>
+
+    <label for="amount">Borç Miktarı:</label>
+    <input type="number" id="amount" name="amount" step="0.01" required>
+
+    <label for="description">Açıklama:</label>
+    <textarea id="description" name="description"></textarea>
+
+    <button type="submit">Borç Ekle</button>
+</form>
+ *@
+ @model DebtRecord
+<br />
+<br />
+
+<form class="user" action="/Debt/Add" method="post">
+	<div class="form-group">
+		<input type="text" id="customerName" name="CustomerName" class="form-control form-control-user"
+			   placeholder="Müşteri İsmini Giriniz..." required />
+	</div>
+
+	<div class="form-group">
+		<input type="number" step="0.01" id="amount" name="Amount" class="form-control form-control-user"
+			   placeholder="Borç Miktarı Giriniz..." required />
+	</div>
+
+	<div class="form-group">
+		<input type="text" id="description" name="Description" class="form-control form-control-user"
+			   placeholder="Açıklama Giriniz..." />
+	</div>
+
+	<button type="submit" class="btn btn-primary btn-user btn-block">Borç Ekle</button>
+</form>
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var message = '@Html.Raw(Json.Serialize(TempData["SuccessMessage"]))';
+            if (message) {
+                document.getElementById("toastMessage").innerText = message;
+                var toast = new bootstrap.Toast(document.getElementById("liveToast"));
+                toast.show();
+            }
+        });
+    </script>
+}
