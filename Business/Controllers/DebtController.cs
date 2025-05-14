@@ -38,9 +38,10 @@ namespace Business.Controllers
 
             return RedirectToAction("Index"); // Listeleme sayfasına yönlendir
         }
-        
+
         public IActionResult Edit(int id)
         {
+
             var debtRecord = _context.debtrecords.FirstOrDefault(d => d.Id == id);
 
             if (debtRecord == null)
@@ -55,6 +56,13 @@ namespace Business.Controllers
         [HttpPost]
         public IActionResult Edit(int id, DebtRecord model)
         {
+
+
+            if (model.Date == default || model.Date.Kind != DateTimeKind.Utc)
+            {
+                model.Date = DateTime.UtcNow;
+            }
+
             if (id != model.Id)
             {
                 return BadRequest(); // İd uyuşmazsa hata döndür
@@ -83,10 +91,11 @@ namespace Business.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (model.Date.Kind != DateTimeKind.Utc)
+                if (model.Date == default || model.Date.Kind != DateTimeKind.Utc)
                 {
-                    model.Date = model.Date.ToUniversalTime();
+                    model.Date = DateTime.UtcNow;
                 }
+
 
                 _context.debtrecords.Add(model);
                 _context.SaveChanges();

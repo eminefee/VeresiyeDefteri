@@ -1,39 +1,54 @@
 ﻿@model DebtRecord
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Debt Record</title>
-</head>
-<body>
-    <h1>Edit Debt Record</h1>
+<br />
+<br />
 
-    <form asp-action="Edit" method="post">
-        <input type="hidden" asp-for="Id" />
+<form asp-action="Edit" method="post" class="user">
+    <div class="form-group">
+        <input asp-for="CustomerName" class="form-control form-control-user"
+               placeholder="Müşteri İsmini Giriniz..." required />
+        <span asp-validation-for="CustomerName" class="text-danger"></span>
+    </div>
 
-        <div>
-            <label for="CustomerName">Customer Name</label>
-            <input type="text" asp-for="CustomerName" />
-        </div>
+    <div class="form-group">
+        <input asp-for="Amount" step="0.01" class="form-control form-control-user"
+               placeholder="Borç Miktarı Giriniz..." required />
+		<small id="amountWarning" class="text-danger d-none">Lütfen sadece sayı giriniz.</small>
+    </div>
 
-        <div>
-            <label for="Amount">Amount</label>
-            <input type="number" asp-for="Amount" step="0.01" />
-        </div>
+    <div class="form-group">
+        <input asp-for="Description" class="form-control form-control-user"
+               placeholder="Açıklama Giriniz..." />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
 
-        <div>
-            <label for="Date">Date</label>
-            <input type="datetime-local" asp-for="Date" />
-        </div>
+    <button type="submit" class="btn btn-primary btn-user btn-block">Güncelle</button>
+</form>
 
-        <div>
-            <label for="Description">Description</label>
-            <input type="text" asp-for="Description" />
-        </div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+<script>
+		document.addEventListener("DOMContentLoaded", function () {
+		const amountInput = document.getElementById("amount");
+		const warning = document.getElementById("amountWarning");
 
-        <button type="submit">Update</button>
-    </form>
-</body>
-</html>
+		if (!amountInput || !warning) return;
+
+		amountInput.addEventListener("input", function () {
+			const value = this.value;
+
+			// Sadece 0-9, nokta ve virgül geçerli
+			const isValid = /^[0-9.,]*$/.test(value);
+
+			if (!isValid) {
+				warning.classList.remove("d-none");
+			} else {
+				warning.classList.add("d-none");
+			}
+
+			// Geçersiz karakterleri anında temizle
+			this.value = value.replace(/[^0-9.,]/g, '');
+		});
+	});
+</script>

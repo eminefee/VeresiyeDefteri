@@ -7,7 +7,8 @@ namespace Business.Context
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        public DbSet<DebtRecord> debtrecords { get; set; } // örnek tablo
+        public DbSet<DebtRecord> debtrecords { get; set; }
+        public DbSet<User> Userss { get; set; }
 
     }
 }

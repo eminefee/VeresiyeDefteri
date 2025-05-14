@@ -1,17 +1,4 @@
-﻿@* <form action="/Debt/Add" method="post">
-    <label for="customerName">Müşteri Adı:</label>
-    <input type="text" id="customerName" name="customerName" required>
-
-    <label for="amount">Borç Miktarı:</label>
-    <input type="number" id="amount" name="amount" step="0.01" required>
-
-    <label for="description">Açıklama:</label>
-    <textarea id="description" name="description"></textarea>
-
-    <button type="submit">Borç Ekle</button>
-</form>
- *@
- @model DebtRecord
+﻿@model DebtRecord
 <br />
 <br />
 
@@ -22,8 +9,9 @@
 	</div>
 
 	<div class="form-group">
-		<input type="number" step="0.01" id="amount" name="Amount" class="form-control form-control-user"
+		<input type="text" id="amount" name="amount" class="form-control form-control-user"
 			   placeholder="Borç Miktarı Giriniz..." required />
+		<small id="amountWarning" class="text-danger d-none">Lütfen sadece sayı giriniz.</small>
 	</div>
 
 	<div class="form-group">
@@ -33,15 +21,62 @@
 
 	<button type="submit" class="btn btn-primary btn-user btn-block">Borç Ekle</button>
 </form>
+
+<!-- Toast Message (Bootstrap Toast) -->
+<div class="toast-container position-fixed top-0 start-0 p-3" style="z-index: 1050;">
+	<div id="liveToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+		<div class="d-flex">
+			<div id="toastMessage" class="toast-body"></div>
+			<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close">X</button>
+		</div>
+	</div>
+</div>
+
 @section Scripts {
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var message = '@Html.Raw(Json.Serialize(TempData["SuccessMessage"]))';
-            if (message) {
-                document.getElementById("toastMessage").innerText = message;
-                var toast = new bootstrap.Toast(document.getElementById("liveToast"));
-                toast.show();
-            }
-        });
-    </script>
+	<script>
+				document.addEventListener("DOMContentLoaded", function () {
+			var message = '@Html.Raw(Json.Serialize(TempData["SuccessMessage"] ?? ""))';
+			if (message) {
+				document.getElementById("toastMessage").innerText = message;
+				var toast = new bootstrap.Toast(document.getElementById("liveToast"), {
+					delay: 5000 // 5 saniye sonra kapanacak
+				});
+				toast.show();
+			}
+		});
+	</script>
 }
+<script>
+	document.querySelector("form").addEventListener("submit", function () {
+		let amountInput = document.getElementById("amount");
+		amountInput.value = amountInput.value.replace(",", ".");
+	});
+</script>
+<script>
+		document.addEventListener("DOMContentLoaded", function () {
+		const amountInput = document.getElementById("amount");
+		const warning = document.getElementById("amountWarning");
+
+		if (!amountInput || !warning) return;
+
+		amountInput.addEventListener("input", function () {
+			const value = this.value;
+
+			// Sadece 0-9, nokta ve virgül geçerli
+			const isValid = /^[0-9.,]*$/.test(value);
+
+			if (!isValid) {
+				warning.classList.remove("d-none");
+			} else {
+				warning.classList.add("d-none");
+			}
+
+			// Geçersiz karakterleri anında temizle
+			this.value = value.replace(/[^0-9.,]/g, '');
+		});
+	});
+</script>
+
+
+
+			 

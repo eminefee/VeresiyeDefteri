@@ -16,7 +16,7 @@
 			<tr>
 				<th>Müşteri İsmi</th>
 				<th>Borç Miktarı</th>
-				<th>Date</th>
+				<th>Tarih</th>
 				<th>Açıklama</th>
 				<th>Aksiyonlar</th>
 			</tr>
@@ -27,7 +27,7 @@
 				<tr>
 					<td>@record.CustomerName</td>
 					<td>@record.Amount</td>
-					<td>@record.Date.ToString("yyyy-MM-dd HH:mm")</td>
+					<td>@record.Date.ToLocalTime().ToString("dd-MM-yyyy HH:mm")</td>
 					<td>@record.Description</td>
 					<td>
 						<a href="@Url.Action("Edit", "Debt", new { id = record.Id })" class="btn btn-sm btn-primary">Güncelle</a>

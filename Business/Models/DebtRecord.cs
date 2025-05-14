@@ -1,10 +1,12 @@
-﻿namespace Business.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Business.Models
 {
     public class DebtRecord
     {
         public int Id { get; set; }
         public string CustomerName { get; set; }
-        public decimal Amount { get; set; }
+        public float Amount { get; set; }
         public DateTime Date { get; set; }
         public string Description { get; set; }
     }
