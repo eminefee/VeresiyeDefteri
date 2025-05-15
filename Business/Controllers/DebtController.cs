@@ -1,9 +1,11 @@
 ﻿using Business.Context;
 using Business.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Business.Controllers
 {
+    [Authorize]
     public class DebtController : Controller
     {
         private readonly AppDbContext _context;
@@ -15,6 +17,7 @@ namespace Business.Controllers
 
         public IActionResult Index()
         {
+
             var records = _context.debtrecords.ToList();
             return View(records);
         }
