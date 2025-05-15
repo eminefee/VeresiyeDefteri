@@ -20,7 +20,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/User/Login";  // Giriş yapılmadan erişim istenirse buraya yönlendiraaaaa
+        options.LoginPath = "/User/Login";  // Giriş yapılmadan erişim istenirse buraya yönlendir
         options.AccessDeniedPath = "/Error/Forbidden"; // Yetkisiz erişim için opsiyonel
         options.ExpireTimeSpan = TimeSpan.FromHours(7);
         options.SlidingExpiration = true;
