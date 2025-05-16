@@ -4,6 +4,7 @@ using Business.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 
 namespace Business.Controllers
 {
@@ -32,29 +33,36 @@ namespace Business.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
         {
-            // Kullanıcıyı veritabanından kontrol et
-            var user = _context.Userss.FirstOrDefault(u => u.Username == username && u.Password == password);
+            var user = _context.Userss.FirstOrDefault(u => u.Username == username);
             if (user == null)
             {
                 ViewBag.Error = "Kullanıcı adı veya şifre hatalı!";
                 return View();
             }
 
-            // Claims oluştur (kullanıcı bilgileri)
+            var passwordHasher = new PasswordHasher<User>();
+            var result = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
+
+            if (result == PasswordVerificationResult.Failed)
+            {
+                ViewBag.Error = "Kullanıcı adı veya şifre hatalı!";
+                return View();
+            }
+
             var claims = new List<Claim>
-    {
-        new Claim(ClaimTypes.Name, user.Username)
-        // Eğer rol eklemek istersen: new Claim(ClaimTypes.Role, "Admin")
-    };
+            {
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Role, user.Role)
+            };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
 
-            // Oturum başlat (çerezi oluştur)
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-            return RedirectToAction("Index", "AnaSayfa"); // Giriş başarılıysa yönlendirme
+            return RedirectToAction("Index", "AnaSayfa");
         }
+
 
         //POST: /User/Register
         [HttpPost]
@@ -73,17 +81,19 @@ namespace Business.Controllers
                 return View();
             }
 
+
+            var role = username.ToLower() == "admin" ? "Admin" : "User";
+            var passwordHasher = new PasswordHasher<User>();
             var newUser = new User
             {
                 Username = username,
-                Password = password // Gerçek projede hash'lenmeli!
+                PasswordHash = passwordHasher.HashPassword(null, password),  // Şifreyi hash'ledik
+                Role = role
             };
 
             _context.Userss.Add(newUser);
             _context.SaveChanges();
 
-            // Kayıt sonrası otomatik giriş:
-            HttpContext.Session.SetString("Username", newUser.Username);
             return RedirectToAction("Login", "User");
         }
 
