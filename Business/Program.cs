@@ -16,6 +16,8 @@ builder.Services.AddSession();
 // MVC Controller + View ekleniyor
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddScoped<EmailService>();
+
 // Authentication ekleniyor, standart cookie scheme ile
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>

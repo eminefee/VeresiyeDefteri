@@ -3,6 +3,7 @@ using System;
 using Business.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Business.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250516075554_mi6")]
+    partial class mi6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -78,39 +81,6 @@ namespace Business.Migrations
                     b.ToTable("Registers");
                 });
 
-            modelBuilder.Entity("Business.Models.SentEmail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Body")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int?>("DebtRecordId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("SentAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Subject")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ToEmail")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DebtRecordId");
-
-                    b.ToTable("SentEmails");
-                });
-
             modelBuilder.Entity("Business.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -130,15 +100,6 @@ namespace Business.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Userss");
-                });
-
-            modelBuilder.Entity("Business.Models.SentEmail", b =>
-                {
-                    b.HasOne("Business.Models.DebtRecord", "DebtRecord")
-                        .WithMany()
-                        .HasForeignKey("DebtRecordId");
-
-                    b.Navigation("DebtRecord");
                 });
 #pragma warning restore 612, 618
         }

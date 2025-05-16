@@ -53,7 +53,7 @@ namespace Business.Controllers
             // Oturum başlat (çerezi oluştur)
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-            return RedirectToAction("Index", "Debt"); // Giriş başarılıysa yönlendirme
+            return RedirectToAction("Index", "AnaSayfa"); // Giriş başarılıysa yönlendirme
         }
 
         //POST: /User/Register
@@ -84,7 +84,7 @@ namespace Business.Controllers
 
             // Kayıt sonrası otomatik giriş:
             HttpContext.Session.SetString("Username", newUser.Username);
-            return RedirectToAction("Index", "Debt");
+            return RedirectToAction("Login", "User");
         }
 
         // GET: /User/Logout

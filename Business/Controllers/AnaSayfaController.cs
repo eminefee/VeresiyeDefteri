@@ -21,7 +21,9 @@ namespace Business.Controllers
             // Veritabanından Amount alanlarının toplamını al
             float totalAmount = _context.debtrecords.Sum(d => d.Amount);
             int totalUser = _context.debtrecords.Count();
+            int totalEmail = _context.SentEmails.Count();
 
+            ViewBag.TotalEmail = totalEmail;
             ViewBag.TotalUser = totalUser;
             ViewBag.TotalAmount = totalAmount;
 

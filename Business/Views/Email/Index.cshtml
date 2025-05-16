@@ -1,0 +1,53 @@
+﻿@model List<SentEmail>
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Gönderilen E-Mailler</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+</head>
+<body>
+
+    <h1>Gönderilen E-Posta Geçmişi</h1>
+
+    <table id="emailTable" class="display">
+        <thead>
+            <tr>
+                <th>Alıcı</th>
+                <th>Konu</th>
+                <th>Mesaj</th>
+                <th>Gönderim Tarihi</th>
+                <th>İlgili Müşteri</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var email in Model)
+            {
+                    <tr>
+                        <td>@email.ToEmail</td>
+                        <td>@email.Subject</td>
+                        <td>@email.Body</td>
+                        <td>@email.SentAt.ToLocalTime().ToString("dd-MM-yyyy HH:mm")</td>
+                        <td>
+                        @(email.DebtRecord != null ? email.DebtRecord.CustomerName : "—")
+                        </td>
+                    </tr>
+            }
+        </tbody>
+    </table>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#emailTable').DataTable({
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/tr.json"
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

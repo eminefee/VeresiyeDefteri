@@ -9,6 +9,7 @@ namespace Business.Context
         public DbSet<DebtRecord> debtrecords { get; set; }
         public DbSet<User> Userss { get; set; }
         public DbSet<Register> Registers { get; set; }
+        public DbSet<SentEmail> SentEmails { get; set; }
 
     }
 }

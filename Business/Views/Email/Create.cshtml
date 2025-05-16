@@ -1,0 +1,23 @@
+﻿@using Business.Configurations
+@model EmailFormViewModel
+
+<h2>E-Mail Gönder</h2>
+
+<form asp-action="Create" method="post">
+    <input type="hidden" asp-for="ToEmail" />
+    <input type="hidden" asp-for="DebtRecordId" />
+
+    <div class="form-group">
+        <label>Alıcı</label>
+        <input class="form-control" value="@Model.ToEmail" disabled />
+    </div>
+    <div class="form-group">
+        <label>Konu</label>
+        <input asp-for="Subject" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Mesaj</label>
+        <textarea asp-for="Body" class="form-control"></textarea>
+    </div>
+    <button type="submit" class="btn btn-success mt-2">Gönder</button>
+</form>

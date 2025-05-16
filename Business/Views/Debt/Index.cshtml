@@ -32,6 +32,7 @@
 					<td>
 						<a href="@Url.Action("Edit", "Debt", new { id = record.Id })" class="btn btn-sm btn-primary">Güncelle</a>
 						<a href="@Url.Action("Delete", "Debt", new { id = record.Id })" class="btn btn-sm btn-danger" onclick="return confirm('Silmek istediğinizden emin misiniz?');">Sil</a>
+						<a href="@Url.Action("Create", "Email", new { id = record.Id })" class="btn btn-sm btn-warning">E-Mail Gönder</a>
 					</td>
 				</tr>
 			}
