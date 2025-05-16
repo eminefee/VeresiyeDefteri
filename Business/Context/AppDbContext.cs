@@ -1,4 +1,5 @@
-﻿using Business.Models;
+﻿using Business.Configurations;
+using Business.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Business.Context
@@ -8,7 +9,6 @@ namespace Business.Context
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
         public DbSet<DebtRecord> debtrecords { get; set; }
         public DbSet<User> Userss { get; set; } 
-        public DbSet<Register> Registers { get; set; }
         public DbSet<SentEmail> SentEmails { get; set; }
 
     }
