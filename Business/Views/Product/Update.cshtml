@@ -1,0 +1,92 @@
+﻿@model Product
+
+<br />
+<br />
+
+<form class="user" asp-action="Update" asp-controller="Product" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="Id" value="@Model.Id" />
+
+	<div class="form-group">
+		<input type="text" id="Name" name="Name" class="form-control form-control-user"
+			   placeholder="Ürün Adı Giriniz..." value="@Model.Name" required />
+	</div>
+
+	<div class="form-group">
+		<input type="text" id="price" name="Price" class="form-control form-control-user"
+			   placeholder="Fiyat Giriniz..." value="@Model.Price.ToString("0.##")" required />
+		<small id="priceWarning" class="text-danger d-none">Lütfen sadece sayı giriniz.</small>
+	</div>
+
+	<div class="form-group">
+		<label>Mevcut Resim:</label><br />
+		@if (!string.IsNullOrEmpty(Model.ImageUrl))
+		{
+			<img src="~/images/@Model.ImageUrl" alt="Ürün Görseli" width="150" class="mb-2" />
+		}
+		else
+		{
+			<span>Yüklenmiş görsel yok.</span>
+		}
+	</div>
+
+	<div class="form-group">
+		<input type="file" id="ImageFile" name="ImageFile" class="form-control form-control-user" accept="image/*" />
+		<small class="text-muted">Yeni görsel seçerseniz eskisi değişir, boş bırakırsanız mevcut görsel kalır.</small>
+	</div>
+
+	<button type="submit" class="btn btn-primary btn-user btn-block">Ürün Güncelle</button>
+</form>
+
+<!-- Toast -->
+<div class="toast-container position-fixed top-0 start-0 p-3" style="z-index: 1050;">
+	<div id="liveToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+		<div class="d-flex">
+			<div id="toastMessage" class="toast-body"></div>
+			<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close">X</button>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			var message = '@Html.Raw(Json.Serialize(TempData["SuccessMessage"] ?? ""))';
+			if (message) {
+				document.getElementById("toastMessage").innerText = message;
+				var toast = new bootstrap.Toast(document.getElementById("liveToast"), {
+					delay: 5000
+				});
+				toast.show();
+			}
+		});
+	</script>
+}
+
+<script>
+	document.querySelector("form").addEventListener("submit", function () {
+		let priceInput = document.getElementById("price");
+		priceInput.value = priceInput.value.replace(",", ".");
+	});
+</script>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const priceInput = document.getElementById("price");
+		const warning = document.getElementById("priceWarning");
+
+		if (!priceInput || !warning) return;
+
+		priceInput.addEventListener("input", function () {
+			const value = this.value;
+			const isValid = /^[0-9.,]*$/.test(value);
+
+			if (!isValid) {
+				warning.classList.remove("d-none");
+			} else {
+				warning.classList.add("d-none");
+			}
+
+			this.value = value.replace(/[^0-9.,]/g, '');
+		});
+	});
+</script>

@@ -1,0 +1,44 @@
+﻿@{
+	ViewData["Title"] = "Kullanıcıya Ürün Ata";
+	var users = ViewBag.Users as List<Business.Models.User>;
+	var products = ViewBag.Products as List<Business.Models.Product>;
+}
+	//Çalışmıyor
+
+<h2>Kullanıcıya Ürün Ata</h2>
+
+<form asp-controller="UserProduct" asp-action="Index" method="post">
+	<div>
+		<label>Kullanıcı:</label>
+		<select name="userId" required>
+			<option value="">Seçiniz</option>
+			@foreach (var user in users)
+			{
+				<option value="@user.Id">@user.Username</option>
+			}
+		</select>
+	</div>
+
+	<div>
+		<label>Ürün:</label>
+		<select name="productId" required>
+			<option value="">Seçiniz</option>
+			@foreach (var product in products)
+			{
+				<option value="@product.Id">@product.Name - @product.Price.ToString("C")</option>
+			}
+		</select>
+	</div>
+
+	<div>
+		<label>Adet:</label>
+		<input type="number" name="quantity" min="1" value="1" required />
+	</div>
+
+	<button type="submit">Ata</button>
+</form>
+
+@if (TempData["SuccessMessage"] != null)
+{
+	<div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}

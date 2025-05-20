@@ -1,0 +1,28 @@
+﻿@model IEnumerable<dynamic>
+    //Çalışmıyor
+
+<h2>Ürünlerim ve Borç Durumum</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Ürün</th>
+            <th>Fiyat</th>
+            <th>Adet</th>
+            <th>Toplam</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Price.ToString("C")</td>
+                <td>@item.Quantity</td>
+                <td>@item.Total.ToString("C")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Toplam Borç: @ViewBag.TotalDebt.ToString("C")</h3>

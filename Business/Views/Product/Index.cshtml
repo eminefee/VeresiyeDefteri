@@ -1,0 +1,56 @@
+﻿@model List<Product>
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Ürün Listesi</title>
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+</head>
+<body>
+	<h1>Ürünler</h1>
+
+	<table id="productTable" class="display">
+		<thead>
+			<tr>
+				<th>Ürün Adı</th>
+				<th>Fiyat</th>
+				<th>Görsel</th>
+				<th>Aksiyonlar</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var product in Model)
+			{
+				<tr>
+					<td>@product.Name</td>
+					<td>@product.Price ₺</td>
+					<td>
+						@if (!string.IsNullOrEmpty(product.ImageUrl))
+						{
+							<img src="~/images/@product.ImageUrl" width="100" />
+						}
+					</td>
+					<td>
+						<a href="@Url.Action("Update", "Product", new { id = product.Id })" class="btn btn-sm btn-primary">Güncelle</a>
+						<a href="@Url.Action("Delete", "Product", new { id = product.Id })" class="btn btn-sm btn-danger" onclick="return confirm('Silmek istediğinize emin misiniz?');">Sil</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			$('#productTable').DataTable({
+				language: {
+					url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/tr.json"
+				}
+			});
+		});
+	</script>
+</body>
+</html>
