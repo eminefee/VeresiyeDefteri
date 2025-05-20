@@ -1,5 +1,4 @@
-﻿@model List<DebtRecord>
-
+﻿@model List<User>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,29 +8,25 @@
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 </head>
 <body>
-	<h1>Borç Kayıtları</h1>
+	<h1>Kullanıcılar</h1>
 
 	<table id="debtTable" class="display">
 		<thead>
 			<tr>
-				<th>Müşteri İsmi</th>
-				<th>Borç Miktarı</th>
-				<th>Tarih</th>
-				<th>Açıklama</th>
+				<th>Kullanıcı Adı</th>
+				<th>Rolü</th>
 				<th>Aksiyonlar</th>
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (var record in Model)
+			@foreach (var user in Model)
 			{
 				<tr>
-					<td>@record.CustomerName</td>
-					<td>@record.Amount</td>
-					<td>@record.Date.ToLocalTime().ToString("dd-MM-yyyy HH:mm")</td>
-					<td>@record.Description</td>
+					<td>@user.Username</td>
+					<td>@user.Role</td>
 					<td>
-						<a href="@Url.Action("Edit", "Debt", new { id = record.Id })" class="btn btn-sm btn-primary">Güncelle</a>
-						<a href="@Url.Action("Delete", "Profile", new { id = record.Id })" class="btn btn-sm btn-danger" onclick="return confirm('Silmek istediğinizden emin misiniz?');">Sil</a>
+						<a href="@Url.Action("ChangePassword", "Profile", new { id = user.Id })" class="btn btn-sm btn-primary">Şifre Değiştir</a>
+						<a href="@Url.Action("Delete", "Profile", new { id = user.Id })" class="btn btn-sm btn-danger" onclick="return confirm('Silmek istediğinizden emin misiniz?');">Sil</a>
 					</td>
 				</tr>
 			}
