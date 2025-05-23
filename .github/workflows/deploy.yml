@@ -1,27 +1,31 @@
-name: Deploy to VPS
+name: Build and Deploy to VPS
 
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repo
+    - name: Kodları çek
       uses: actions/checkout@v3
 
-    - name: Setup SSH key
-      uses: webfactory/ssh-agent@v0.8.1
-      with:
-        ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
+    - name: SSH özel anahtar ekle
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
 
-    - name: Deploy to VPS
+    - name: VPS'e Docker komutları gönder
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
-          cd /path/to/your/app || exit
-          git pull origin main
-          # Docker kullanıyorsan buraya docker komutlarını ekle
+          cd /home/ubuntu/app || mkdir -p /home/ubuntu/app && cd /home/ubuntu/app
+          docker stop buisness-container || true
+          docker rm buisness-container || true
+          docker rmi buisness-app || true
+          docker build -t buisness-app .
+          docker run -d -p 80:80 --name buisness-container buisness-app
         EOF
