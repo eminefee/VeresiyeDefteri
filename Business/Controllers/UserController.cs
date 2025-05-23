@@ -5,9 +5,12 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Business.Controllers
 {
+    [Authorize(Roles = "Admin,User")]
+
     public class UserController : Controller
     {
         private readonly AppDbContext _context;
