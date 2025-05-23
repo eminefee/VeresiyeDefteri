@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Business.Controllers
 {
-
+    [Authorize(Roles = "Admin,User")]
 
     public class UserController : Controller
     {
