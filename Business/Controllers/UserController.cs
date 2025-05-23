@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Business.Controllers
 {
-    [Authorize(Roles = "Admin,User")] 
+    [Authorize(Roles = "Admin,User")]// Sadece Admin ve User rolleri için erişim izni veriyoruz
 
     public class UserController : Controller
     {
