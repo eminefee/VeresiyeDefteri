@@ -14,7 +14,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddSession();
 
 // MVC Controller + View ekleniyor
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews();  
 
 builder.Services.AddScoped<EmailService>();
 
