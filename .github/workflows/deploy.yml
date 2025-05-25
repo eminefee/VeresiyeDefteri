@@ -25,7 +25,7 @@ jobs:
       run: |
         ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "echo 'SSH bağlantısı başarılı'"
 
-    - name: Hedef klasörü oluştur
+    - name: Hedef klasörü oluştur (eğer yoksa)
       run: |
         ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "mkdir -p /root/app"
 
@@ -40,6 +40,8 @@ jobs:
           docker stop buisness-container || true
           docker rm buisness-container || true
           docker rmi buisness-app || true
+          # Eğer Dockerfile başka klasördeyse, -f parametresini kullan. Örneğin:
+          # docker build -t buisness-app -f Buisness/Dockerfile .
           docker build -t buisness-app .
           docker run -d -p 80:80 --name buisness-container buisness-app
         EOF
