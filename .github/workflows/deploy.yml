@@ -25,14 +25,18 @@ jobs:
       run: |
         ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "echo 'SSH bağlantısı başarılı'"
 
+    - name: Hedef klasörü oluştur
+      run: |
+        ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "mkdir -p /root/app"
+
     - name: Dosyaları VPS'e kopyala
       run: |
-        rsync -avz --delete -e "ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no" ./ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/ubuntu/app
+        rsync -avz --delete -e "ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no" ./ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/root/app
 
     - name: VPS üzerinde Docker işlemleri
       run: |
         ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
-          cd /home/ubuntu/app
+          cd /root/app
           docker stop buisness-container || true
           docker rm buisness-container || true
           docker rmi buisness-app || true
