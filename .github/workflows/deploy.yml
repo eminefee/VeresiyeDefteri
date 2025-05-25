@@ -13,16 +13,25 @@ jobs:
     - name: Kodları çek
       uses: actions/checkout@v3
 
-    - name: SSH özel anahtar ekle
+    - name: SSH anahtarını ekle
       run: |
         mkdir -p ~/.ssh
         echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_ed25519
         chmod 600 ~/.ssh/id_ed25519
+        ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
 
-    - name: VPS'e Docker komutları gönder
+    - name: VPS bağlantısını test et
       run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
-          cd /home/ubuntu/app || mkdir -p /home/ubuntu/app && cd /home/ubuntu/app
+        ssh -i ~/.ssh/id_ed25519 ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "echo 'SSH bağlantısı başarılı'"
+
+    - name: Dosyaları VPS'e kopyala
+      run: |
+        rsync -avz -e "ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no" ./ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/ubuntu/app
+
+    - name: VPS üzerinde Docker işlemleri
+      run: |
+        ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+          cd /home/ubuntu/app
           docker stop buisness-container || true
           docker rm buisness-container || true
           docker rmi buisness-app || true
