@@ -41,7 +41,7 @@ jobs:
         docker rm business-container || true
         docker rmi business-app || true
         docker build -t business-app -f /root/app/Business/Dockerfile /root/app/Business
-        docker run -d -p 80:80 --name business-container --restart unless-stopped buisness-app
+        docker run -d -p 80:8080 --name business-container --restart unless-stopped business-app
         EOF
 
 
