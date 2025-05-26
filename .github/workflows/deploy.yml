@@ -31,15 +31,27 @@ jobs:
 
     - name: Dosyaları VPS'e kopyala
       run: |
-        rsync -avz --delete -e "ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no" ./ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/root/app
+        rsync -avz --delete -e "ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no" ./ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/root/app/
 
     - name: VPS üzerinde Docker işlemleri
       run: |
         ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+          set -e  # Hata olursa işlemi durdur
           cd /root/app
+          # Eski container ve image'ı temizle
           docker stop buisness-container || true
           docker rm buisness-container || true
           docker rmi buisness-app || true
-          docker build -t buisness-app -f ./Buisness/Dockerfile .
+          
+          # Dockerfile için context ve path'i kontrol et
+          if [ ! -f ./Buisness/Dockerfile ]; then
+            echo "HATA: /root/app/Buisness/Dockerfile dosyası bulunamadı!"
+            exit 1
+          fi
+          
+          # Docker image build
+          docker build -t buisness-app -f ./Buisness/Dockerfile /root/app
+          
+          # Container başlat
           docker run -d -p 80:80 --name buisness-container buisness-app
         EOF
