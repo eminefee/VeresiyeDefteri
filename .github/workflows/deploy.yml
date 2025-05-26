@@ -13,19 +13,33 @@ jobs:
     - name: Kodları çek
       uses: actions/checkout@v3
 
-    - name: SSH özel anahtar ekle
+    - name: SSH anahtarını ayarla
       run: |
         mkdir -p ~/.ssh
         echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_ed25519
         chmod 600 ~/.ssh/id_ed25519
+        ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+        chmod 644 ~/.ssh/known_hosts
 
-    - name: VPS'e Docker komutları gönder
+    - name: VPS bağlantısını test et
       run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
-          cd /home/ubuntu/app || mkdir -p /home/ubuntu/app && cd /home/ubuntu/app
+        ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "echo 'SSH bağlantısı başarılı'"
+
+    - name: Hedef klasörü oluştur
+      run: |
+        ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "mkdir -p /root/app"
+
+    - name: Dosyaları VPS'e kopyala
+      run: |
+        rsync -avz --delete -e "ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no" ./ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/root/app
+
+    - name: VPS üzerinde Docker işlemleri
+      run: |
+        ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+          cd /root/app
           docker stop buisness-container || true
           docker rm buisness-container || true
           docker rmi buisness-app || true
-          docker build -t buisness-app .
+          docker build -t buisness-app -f ./Buisness/Dockerfile .
           docker run -d -p 80:80 --name buisness-container buisness-app
         EOF
