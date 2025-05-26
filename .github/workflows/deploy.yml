@@ -40,8 +40,8 @@ jobs:
         docker stop buisness-container || true
         docker rm buisness-container || true
         docker rmi buisness-app || true
-        docker build -t buisness-app -f /root/app/Buisness/Dockerfile /root/app
-        docker run -d -p 80:80 --name buisness-container buisness-app
+        docker build -t buisness-app -f /root/app/Business/Dockerfile /root/app/Business
+        docker run -d -p 80:80 --name buisness-container --restart unless-stopped buisness-app
         EOF
 
 
