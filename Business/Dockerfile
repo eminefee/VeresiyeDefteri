@@ -18,5 +18,5 @@ RUN dotnet publish "Business.csproj" -c Release -o /app/publish /p:UseAppHost=fa
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 COPY --from=build /app/publish .
-EXPOSE 8080
+EXPOSE 80
 ENTRYPOINT ["dotnet", "Business.dll"]
