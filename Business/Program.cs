@@ -56,6 +56,6 @@ app.UseStatusCodePagesWithReExecute("/Error/Status", "?code={0}");
 // Route ayarı
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=User}/{action=Login}/{id?}");
+    pattern: "{controller=User}/{action=Login}");
 
 app.Run();

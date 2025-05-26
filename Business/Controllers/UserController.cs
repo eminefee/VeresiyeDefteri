@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Business.Controllers
 {
-    [Authorize(Roles = "Admin,User")]// Sadece Admin ve User rolleri için erişim izni veriyoruz
+    //[Authorize(Roles = "Admin,User")]// Sadece Admin ve User rolleri için erişim izni veriyoruz
 
     public class UserController : Controller
     {
@@ -21,6 +21,7 @@ namespace Business.Controllers
         }
 
         // GET: /User/Login
+    
         public IActionResult Login()
         {
             return View();
