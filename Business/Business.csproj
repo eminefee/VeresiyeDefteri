@@ -31,8 +31,4 @@
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include=".github\workflows\deploy.yml" />
-  </ItemGroup>
-
 </Project>
