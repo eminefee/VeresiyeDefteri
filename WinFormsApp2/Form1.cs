@@ -117,7 +117,7 @@ namespace WinFormsApp2
             }
             else
             {
-                MessageBox.Show("Connection string boþ olamaz.");
+                MessageBox.Show("Connection string boþ olamaz. ");
             }
         }
     }
