@@ -26,7 +26,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.AccessDeniedPath = "/Error/Forbidden"; // Yetkisiz erişim için opsiyonel
         options.ExpireTimeSpan = TimeSpan.FromHours(7);
         options.SlidingExpiration = true;
+
     });
+
 
 // Authorization ekleniyor
 builder.Services.AddAuthorization();

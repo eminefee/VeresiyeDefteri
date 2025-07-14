@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Authorization;
 namespace Business.Controllers
 {
     //[Authorize(Roles = "Admin,User")]// Sadece Admin ve User rolleri için erişim izni veriyoruz
-
     public class UserController : Controller
     {
         private readonly AppDbContext _context;
@@ -35,6 +34,7 @@ namespace Business.Controllers
 
         // POST: /User/Login
         [HttpPost]
+        
         public async Task<IActionResult> Login(string username, string password)
         {
             var user = _context.Userss.FirstOrDefault(u => u.Username == username);
@@ -52,11 +52,12 @@ namespace Business.Controllers
                 ViewBag.Error = "Kullanıcı adı veya şifre hatalı!";
                 return View();
             }
-
+            
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, user.Role)
+                new Claim(ClaimTypes.Role, user.Role),
+
             };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

@@ -1,4 +1,5 @@
-﻿using Business.Context;
+﻿using System.Diagnostics;
+using Business.Context;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +27,6 @@ namespace Business.Controllers
             ViewBag.TotalEmail = totalEmail;
             ViewBag.TotalUser = totalUser;
             ViewBag.TotalAmount = totalAmount;
-
             return View();
         }
     }
